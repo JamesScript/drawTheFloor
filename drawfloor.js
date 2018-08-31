@@ -3,6 +3,8 @@ const Engine = Matter.Engine,
     Events = Matter.Events,
     Bodies = Matter.Bodies;
 
+let plonks = [];
+
 let engine;
 let world;
 let particles = [];
@@ -12,6 +14,14 @@ let smoke = [];
 let drawStatic = true;
 
 function setup() {
+    for (let i = 0; i < 16; i++) {
+        plonks.push(
+            new Howl({
+                src: ["plonk.wav"],
+                rate: 1 + i / 10
+            })
+        );
+    }
     createCanvas(1000, 800);
     colorMode(HSB);
     engine = Engine.create();
@@ -22,8 +32,12 @@ function setup() {
         for (let i = 0; i < pairs.length; i++) {
             let labelA = pairs[i].bodyA.label;
             let labelB = pairs[i].bodyB.label;
-            if (labelA === 'particle' && labelB === 'peg') {
-                //ding.play();
+            if (labelA === 'particle' && labelB === 'customShape' || labelB === 'particle' && labelA === 'customShape') {
+                console.log(pairs[i]);
+                let ball = labelA === 'particle' ? pairs[i].bodyA : pairs[i].bodyB;
+                let stereoPosition = map(ball.position.x, 0, width, -1, 1);
+                plonks[ball.pitch].stereo(stereoPosition);
+                plonks[ball.pitch].play();
             }
         }
     }
@@ -43,6 +57,12 @@ function draw() {
     if (Math.random() > 0.8) {
         newParticle();
     }
+    // if (frameCount % 10 === 0) {
+    //     plonks[8].stereo(soundPos);
+    //     plonks[8].play();
+    //     soundPos += 0.1;
+    //     console.log(soundPos);
+    // }
     if (mouseIsPressed) {
         touchedVertices.push([Math.round(mouseX), Math.round(mouseY)]);
         noFill();

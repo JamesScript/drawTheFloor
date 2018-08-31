@@ -17,6 +17,7 @@ function CustomShape(vertices) {
     this.matterVectors = this.vertices.map(v => Matter.Vector.create(v[0], v[1]));
     this.expended = false;
     this.body = Bodies.fromVertices(vertices[0][0] + size.x / 2, vertices[0][1] + size.y / 2 + thickness / 2, this.matterVectors, options);
+    this.body.label = "customShape";
     World.add(world, this.body);
 }
 

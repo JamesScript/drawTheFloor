@@ -9,6 +9,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "howler": "^2.0.15",
     "poly-decomp": "^0.3.0"
   }
 }

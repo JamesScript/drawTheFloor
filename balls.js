@@ -11,6 +11,7 @@ function Ball(x, y, r, options = {}, label) {
     this.col = color(random(360), 255, 255);
     this.body = Bodies.circle(x, y, r, options);
     this.body.label = label;
+    this.body.pitch = floor(random(plonks.length));
     this.r = r;
     this.expended = false;
     this.age = 0;
