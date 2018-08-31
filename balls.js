@@ -8,7 +8,7 @@ function particle(x, y, r) {
 }
 
 function Ball(x, y, r, options = {}, label) {
-    this.col = color(random(360), 255, 255);
+    this.col = color(random(360), 100, 100);
     this.body = Bodies.circle(x, y, r, options);
     this.body.label = label;
     this.body.pitch = floor(random(plonks.length));
@@ -30,5 +30,6 @@ Ball.prototype.show = function() {
     this.age++;
     if (isOffScreen(this) || this.age > this.lifeSpan) {
         this.expended = true;
+        if (this.age > this.lifeSpan) smoke.push(new Smoke(pos.x, pos.y, this.col));
     }
 };
