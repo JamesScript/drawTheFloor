@@ -1,0 +1,14 @@
+{
+  "name": "drawthefloor",
+  "version": "1.0.0",
+  "main": "drawfloor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "poly-decomp": "^0.3.0"
+  }
+}
