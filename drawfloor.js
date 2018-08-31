@@ -11,7 +11,10 @@ let particles = [];
 let drawnShapes = [];
 let touchedVertices = [];
 let smoke = [];
+let goals = [];
+let canDraw = true;
 let drawStatic = true;
+let stage = 0;
 
 function setup() {
     for (let i = 0; i < 16; i++) {
@@ -25,6 +28,7 @@ function setup() {
     createCanvas(1000, 800);
     colorMode(HSB);
     rectMode(CENTER);
+    textAlign(CENTER);
     engine = Engine.create();
     world = engine.world;
 
@@ -44,22 +48,30 @@ function setup() {
 
     Events.on(engine, 'collisionStart', collision);
 
-    newParticle();
+    newParticle(random(10, width - 10), 0, 10);
 
     // smoke[0] = new Smoke(width / 2, height / 2, color(200, 100, 100));
 }
 
-function newParticle() {
-    let p = particle(random(10, width - 10), 0, 10);
-    particles.push(p);
+function newParticle(x, y, r) {
+    particles.push(particle(x, y, r));
 }
 
 function draw() {
     background(0, 0, 0);
-    if (Math.random() > 0.8) {
-        newParticle();
+    cursor(ARROW);
+    if (stage === 0) {
+        if (Math.random() > 0.8) {
+            newParticle(random(10, width - 10), 0, 10);
+        }
+    } else {
+        levelOne();
     }
-    if (mouseIsPressed) {
+    fundamentals();
+}
+
+function fundamentals() {
+    if (mouseIsPressed && canDraw) {
         touchedVertices.push([Math.round(mouseX), Math.round(mouseY)]);
         noFill();
         stroke(255);
@@ -75,22 +87,33 @@ function draw() {
         }
     }
     Engine.update(engine, 1000 / 30);
-    const gameObjects = [particles, drawnShapes, smoke];
+    const gameObjects = [particles, drawnShapes, smoke, goals];
     for (let i = 0; i < gameObjects.length; i++) {
         for (let j = 0; j < gameObjects[i].length; j++) {
             gameObjects[i][j].show();
             if (gameObjects[i][j].expended) {
-                if (i !== 2) World.remove(world, gameObjects[i][j].body);
+                // Put non-world objects (stuff unrecognised by Matter framework) towards end of array, change if statement below accordingly
+                if (i < 2) World.remove(world, gameObjects[i][j].body);
                 gameObjects[i].splice(j, 1);
                 j--;
             }
         }
     }
-    // menu();
+    menu();
 }
 
 function isOffScreen(obj, size = 50) {
     let x = obj.body.position.x;
     let y = obj.body.position.y;
     return (x < -size || x > width + size || y > height + size || y < -size);
+}
+
+function rectIntersect(a, b) {
+    // For rectangular objects where the x and y coordinates are the center
+    return (
+        a.x - a.w / 2 <= b.x + b.w / 2
+        && a.x + a.w / 2 >= b.x - b.w / 2
+        && a.y - a.h / 2 <= b.y + b.h / 2
+        && a.y + a.h / 2 >= b.y - b.h / 2
+    )
 }

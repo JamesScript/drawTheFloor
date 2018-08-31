@@ -27,7 +27,6 @@ CustomShape.prototype.show = function() {
     beginShape();
     for (let i = 0; i < this.body.vertices.length; i++) {
         vertex(this.body.vertices[i].x, this.body.vertices[i].y)
-        // vertex(this.vertices[i][0], this.vertices[i][1]);
     }
     endShape(CLOSE);
 };
