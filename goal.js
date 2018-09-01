@@ -3,6 +3,7 @@ function Goal(x, y, w, h) {
     this.y = y;
     this.w = w;
     this.h = h;
+    this.received = [];
 }
 
 Goal.prototype.show = function() {

@@ -8,15 +8,15 @@ function menu() {
         const startButton = {
             x: width / 2,
             y: height / 2,
-            w: width * 0.3,
-            h: height * 0.2
+            w: width * 0.15,
+            h: height * 0.13
         };
         strokeWeight(5);
         let buttonStroke = color(0, 0, 50);
         let buttonFill = color(0, 0, 80);
         let textFill = color(0, 0, 0);
         if (
-            rectIntersect(startButton, {x: mouseX, y: mouseY, w: 1, h: 1})
+            rectIntersect(startButton, mouseObj)
             // mouseX > startButton.x - startButton.w / 2
             // && mouseX < startButton.x + startButton.w / 2
             // && mouseY > startButton.y - startButton.h / 2
@@ -36,8 +36,17 @@ function menu() {
         rect(startButton.x, startButton.y, startButton.w, startButton.h, 50);
         fill(textFill);
         textSize(30);
-        text("START", width / 2, height / 2);
+        text("START", width / 2, height / 2 + 10);
     } else if (stage === 1) {
+
+    } else {
+        const menuButton = {
+            x: width * 0.9,
+            y: height * 0.1,
+            w: width * 0.05,
+            h: height * 0.05
+        };
+        rect(menuButton.x, menuButton.y, menuButton.w, menuButton.h);
 
     }
 }

@@ -13,7 +13,8 @@ function Ball(x, y, r, options = {}, label) {
     this.body.label = label;
     this.body.pitch = floor(random(plonks.length));
     this.r = r;
-    this.expended = false;
+    this.expended = false; // to be deleted
+    this.logged = false; // has been logged by a goal as received
     this.age = 0;
     this.lifeSpan = 600;
     World.add(world, this.body);
@@ -30,6 +31,14 @@ Ball.prototype.show = function() {
     this.age++;
     if (isOffScreen(this) || this.age > this.lifeSpan) {
         this.expended = true;
-        if (this.age > this.lifeSpan) smoke.push(new Smoke(pos.x, pos.y, this.col));
+        if (this.age > this.lifeSpan) G.smoke.push(new Smoke(pos.x, pos.y, this.col));
+    }
+    for (let i = 0; i < G.goals.length; i++) {
+        if (rectIntersect({x: pos.x, y: pos.y, w: this.r, h: this.r}, G.goals[i]) && !this.logged) {
+            G.goals[i].received.push(`${this.body.label} -- Color: ${this.col}`);
+            this.logged = true;
+            G.smoke.push(new Smoke(pos.x, pos.y, this.col));
+            fireworks(pos.x, pos.y, this.col);
+        }
     }
 };
